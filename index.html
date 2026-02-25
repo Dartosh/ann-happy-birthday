@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#e8a0bf" />
+    <title>Happy Birthday!</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💖</text></svg>"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="presentation" id="presentation">
+      <section class="slide slide--active" data-slide="0">
+        <div class="slide__content">
+          <p class="slide__heading">
+            Ух ты! Кажется у одного особенного человека сегодня особенный день!
+          </p>
+          <p class="slide__subtext">
+            Жмякай &laquo;Дальше&raquo;, у&nbsp;меня есть кое&#8209;что важное,
+            что я&nbsp;бы хотел тебе рассказать
+          </p>
+          <button class="slide__btn" data-action="next">Дальше</button>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="1">
+        <div class="slide__split">
+          <div class="slide__split-text">
+            <p class="slide__text" data-reveal="0">Небольшой инструктаж</p>
+            <p class="slide__text" data-reveal="2000">
+              В целом-то здесь ничего сложного, видишь кнопку "Дальше" (или
+              любым текстом, который взбрел мне в голову)? Нажимай на нее и
+              смотри, что будет, а если нет, значит я от тебя что-то жду еще 😏
+            </p>
+            <p class="slide__text" data-reveal="4000">
+              Не время жевать сопли, полетели!
+            </p>
+            <button class="slide__btn" data-action="next" data-reveal="6000">
+              Дальше
+            </button>
+          </div>
+          <div class="slide__split-image">
+            <img
+              src="assets/images/antony.png"
+              alt="Антон"
+              class="slide__character"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="2">
+        <div class="slide__content">
+          <p class="slide__heading" data-reveal="0">И так, начнем...</p>
+          <button class="slide__btn" data-action="next" data-reveal="1">
+            Погнали
+          </button>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="3">
+        <div class="slide__content">
+          <p class="slide__heading" data-reveal="0">Ты готова?</p>
+          <button class="slide__btn" data-action="next" data-reveal="1">
+            Да
+          </button>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="4">
+        <div class="slide__content">
+          <p class="slide__heading" data-reveal="0">Точно?</p>
+          <button class="slide__btn" data-action="next" data-reveal="1">
+            ДА!!!
+          </button>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="5">
+        <div class="slide__content">
+          <p class="slide__heading" data-reveal="0">
+            Ладно&#8209;ладно, понял я...
+          </p>
+          <button class="slide__btn" data-action="next" data-reveal="1">
+            Давай дальше
+          </button>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="6">
+        <div class="c-slide">
+          <div class="c-slide__track">
+            <div class="c-slide__item">
+              <p class="c-slide__text">
+                В первую очередь, Анют, я хотел бы тебе сказать, какая ты
+                умница, ты самая невероятная девушка, что я когда&#8209;либо
+                встречал
+              </p>
+            </div>
+            <div class="c-slide__item">
+              <p class="c-slide__text">
+                И я сейчас даже не только про твою неземную красоту, я про твой
+                острый ум, самоотдачу своему делу, трудолюбивость и миллион
+                других вещей, которые я в тебе очень ценю и за которые я тебя
+                ещё сильнее люблю
+              </p>
+            </div>
+            <div class="c-slide__item">
+              <p class="c-slide__text">
+                Но что ещё в тебе более удивительное: твоя целеустремлённость и
+                непоколебимость. Ты достигла таких высот <b>САМА</b>, но даже не
+                думаешь останавливаться
+              </p>
+            </div>
+            <div class="c-slide__item c-slide__item--btn">
+              <button class="slide__btn" id="cNextBtn">Дальше</button>
+            </div>
+          </div>
+          <div class="c-slide__dots">
+            <span class="c-slide__dot"></span>
+            <span class="c-slide__dot"></span>
+            <span class="c-slide__dot"></span>
+            <span class="c-slide__dot"></span>
+          </div>
+          <div class="c-slide__image-wrap">
+            <img
+              src="assets/images/ann-the-first.png"
+              alt="Аня"
+              class="c-slide__image"
+            />
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="peeker" id="peeker" aria-hidden="true">
+      <img
+        src="assets/images/ann-hiding-normal.png"
+        class="peeker__img peeker__img--normal"
+        alt=""
+      />
+      <img
+        src="assets/images/ann-hiding-up.png"
+        class="peeker__img peeker__img--up"
+        alt=""
+      />
+      <img
+        src="assets/images/ann-hiding-down.png"
+        class="peeker__img peeker__img--down"
+        alt=""
+      />
+    </div>
+
+    <div class="progress" id="progress">
+      <div class="progress__bar" id="progressBar"></div>
+    </div>
+
+    <script src="js/typewriter.js"></script>
+    <script src="js/presentation.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

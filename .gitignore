@@ -1,0 +1,11 @@
+.DS_Store
+Thumbs.db
+*.log
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
