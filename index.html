@@ -21,6 +21,18 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <div class="loader" id="loader" aria-live="polite" aria-label="Загрузка">
+      <div class="loader__inner">
+        <div class="loader__hearts" aria-hidden="true">
+          <span>💖</span><span>💕</span><span>💗</span>
+        </div>
+        <p class="loader__text">Секундочку, грузим всю вашу красоту...</p>
+        <div class="loader__dots" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+
     <div class="presentation" id="presentation">
       <section class="slide slide--active" data-slide="0">
         <div class="slide__content">

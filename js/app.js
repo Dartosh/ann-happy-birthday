@@ -1,3 +1,21 @@
+function hideLoader() {
+  const loader = document.getElementById("loader");
+  if (!loader) return;
+  loader.classList.add("loader--hidden");
+  loader.addEventListener("transitionend", () => loader.remove(), {
+    once: true,
+  });
+}
+
+const loaderStart = Date.now();
+const MIN_LOADER_MS = 3000;
+
+window.addEventListener("load", () => {
+  const elapsed = Date.now() - loaderStart;
+  const delay = Math.max(0, MIN_LOADER_MS - elapsed);
+  setTimeout(hideLoader, delay);
+});
+
 document.addEventListener("DOMContentLoaded", () => {
   window.presentation = new Presentation("#presentation");
   runPeekerAnimation();
@@ -24,7 +42,7 @@ function runPeekerAnimation() {
 
   const steps = [
     [
-      3000,
+      6000,
       () => {
         peeker.classList.add("peeker--visible");
         showImg(imgNormal);
