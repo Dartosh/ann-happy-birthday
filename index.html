@@ -36,29 +36,27 @@
       </section>
 
       <section class="slide" data-slide="1">
-        <div class="slide__split">
-          <div class="slide__split-text">
-            <p class="slide__text" data-reveal="0">Небольшой инструктаж</p>
-            <p class="slide__text" data-reveal="2000">
-              В целом-то здесь ничего сложного, видишь кнопку "Дальше" (или
-              любым текстом, который взбрел мне в голову)? Нажимай на нее и
-              смотри, что будет, а если нет, значит я от тебя что-то жду еще 😏
-            </p>
-            <p class="slide__text" data-reveal="4000">
-              Не время жевать сопли, полетели!
-            </p>
-            <button class="slide__btn" data-action="next" data-reveal="6000">
-              Дальше
-            </button>
-          </div>
-          <div class="slide__split-image">
-            <img
-              src="assets/images/antony.png"
-              alt="Антон"
-              class="slide__character"
-            />
-          </div>
+        <div class="slide__content instr-slide__content">
+          <p class="slide__text" data-reveal="0">Небольшой инструктаж</p>
+          <p class="slide__text" data-reveal="2000">
+            В целом-то здесь ничего сложного, видишь кнопку "Дальше" (или с
+            любым другим текстом, который взбрел мне в голову)? Нажимай на нее
+            и смотри, что будет, а если нет, значит я от тебя что-то жду еще
+            😏
+          </p>
+          <p class="slide__text" data-reveal="4000">
+            Не время жевать сопли, полетели!
+          </p>
+          <button class="slide__btn" data-action="next" data-reveal="6000">
+            Дальше
+          </button>
         </div>
+        <img
+          src="assets/images/antony.png"
+          alt=""
+          aria-hidden="true"
+          class="instr-slide__img"
+        />
       </section>
 
       <section class="slide" data-slide="2">
@@ -124,11 +122,22 @@
                 думаешь останавливаться
               </p>
             </div>
+            <div class="c-slide__item c-slide__item--dark">
+              <p class="c-slide__text">
+                Отсюда, Анют, я бы хотел сформулировать своё первое пожелание:
+                <b
+                  >так и не останавливайся! Иди вперёд, до самого победного
+                  конца. Моя звёздочка, сияй ярче всех, среди всей этой тьмы и
+                  пусть тебя не пугают трудности и преграды на пути!</b
+                >
+              </p>
+            </div>
             <div class="c-slide__item c-slide__item--btn">
               <button class="slide__btn" id="cNextBtn">Дальше</button>
             </div>
           </div>
           <div class="c-slide__dots">
+            <span class="c-slide__dot"></span>
             <span class="c-slide__dot"></span>
             <span class="c-slide__dot"></span>
             <span class="c-slide__dot"></span>
@@ -140,6 +149,186 @@
               alt="Аня"
               class="c-slide__image"
             />
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="7">
+        <div class="stack-slide" id="stackSlide">
+          <div class="stack-slide__deck" id="stackDeck">
+            <div class="stack-slide__card" data-stack-idx="0">
+              <p class="stack-slide__text">
+                Ты — человек, с которым интересно жить, а не просто проводить
+                время. С тобой можно спорить, молчать, планировать, отменять
+                планы, менять решения в последний момент — и во всем этом есть
+                движение
+              </p>
+            </div>
+            <div class="stack-slide__card" data-stack-idx="1">
+              <p class="stack-slide__text">
+                Я люблю в тебе всё: что ты можешь злиться, уставать,
+                сомневаться, быть грустной. У тебя есть характер и свои границы.
+                Это делает тебя настоящей. Всё это - есть ты, ты прекрасна, не
+                бойся быть собой.
+              </p>
+            </div>
+            <div
+              class="stack-slide__card stack-slide__card--dark"
+              data-stack-idx="2"
+            >
+              <p class="stack-slide__text">
+                Я хочу,
+                <b
+                  >чтобы в этом году у тебя появилось то, что ты действительно
+                  выберешь сама. Чтобы ты чаще говорила «нет» тому, что не твоё,
+                  и «да» тому, от чего внутри щёлкает. Чтобы не соглашалась на
+                  меньшее — ни в работе, ни в мечтах, ни в людях рядом.</b
+                >
+              </p>
+            </div>
+            <div
+              class="stack-slide__card stack-slide__card--last"
+              data-stack-idx="3"
+            >
+              <button class="slide__btn stack-slide__next" id="stackNextBtn">
+                Дальше
+              </button>
+            </div>
+          </div>
+          <span class="stack-slide__hint" id="stackHint">
+            <span class="stack-slide__hint-dot"></span>Нажми, чтобы продолжить
+          </span>
+        </div>
+      </section>
+
+      <section class="slide" data-slide="8">
+        <div class="tt-slide" id="ttSlide">
+
+          <!-- 1 — text only -->
+          <div class="tt-card">
+            <div class="tt-inner">
+              <p class="tt-text">А теперь, давай напомню тебе, какая ты очаровательная, шикарная и прекрасная. И то, какой ты бываешь разной.</p>
+            </div>
+          </div>
+
+          <!-- 2 -->
+          <div class="tt-card">
+            <div class="tt-inner tt-inner--photo">
+              <div class="tt-img-wrap">
+                <img src="assets/images/photo-1.JPG" alt="" class="tt-img" />
+              </div>
+              <p class="tt-text">Кажется это было совсем недавно, а уже прошло полгода 😁</p>
+            </div>
+          </div>
+
+          <!-- 3 -->
+          <div class="tt-card">
+            <div class="tt-inner tt-inner--photo">
+              <div class="tt-img-wrap">
+                <img src="assets/images/photo-2.JPG" alt="" class="tt-img" />
+              </div>
+              <p class="tt-text">Завидую здесь Роману Госленко 😭</p>
+            </div>
+          </div>
+
+          <!-- 4 -->
+          <div class="tt-card">
+            <div class="tt-inner tt-inner--photo">
+              <div class="tt-img-wrap">
+                <img src="assets/images/photo-3.jpg" alt="" class="tt-img" />
+              </div>
+              <p class="tt-text">Уже совсем крутая, на Пагоде!</p>
+            </div>
+          </div>
+
+          <!-- 5 -->
+          <div class="tt-card">
+            <div class="tt-inner tt-inner--photo">
+              <div class="tt-img-wrap">
+                <img src="assets/images/photo-4.JPG" alt="" class="tt-img" />
+              </div>
+              <p class="tt-text">Такая милашка, я не могу!!! 😍</p>
+            </div>
+          </div>
+
+          <!-- 6 -->
+          <div class="tt-card">
+            <div class="tt-inner tt-inner--photo">
+              <div class="tt-img-wrap">
+                <img src="assets/images/photo-5.JPG" alt="" class="tt-img" />
+              </div>
+              <p class="tt-text">Милашка x2 😍😍</p>
+            </div>
+          </div>
+
+          <!-- 7 -->
+          <div class="tt-card">
+            <div class="tt-inner tt-inner--photo">
+              <div class="tt-img-wrap">
+                <img src="assets/images/photo-6.JPG" alt="" class="tt-img" />
+              </div>
+              <p class="tt-text">Милашка x3 😍😍😍</p>
+            </div>
+          </div>
+
+          <!-- 8 — placeholder -->
+          <div class="tt-card">
+            <div class="tt-inner tt-inner--placeholder">
+              <div class="tt-placeholder">
+                <span class="tt-placeholder__icon">📷</span>
+              </div>
+              <p class="tt-text tt-text--placeholder">Ну что за дела... Ты настолько шикарна, что эта фотка кажется не смогла загрузиться из&#8209;за масштаба твоей красоты</p>
+            </div>
+          </div>
+
+          <!-- 9 -->
+          <div class="tt-card">
+            <div class="tt-inner tt-inner--photo">
+              <div class="tt-img-wrap">
+                <img src="assets/images/photo-9.jpg" alt="" class="tt-img" />
+              </div>
+              <p class="tt-text">Просто нет слов 🥵</p>
+            </div>
+          </div>
+
+          <!-- 10 -->
+          <div class="tt-card">
+            <div class="tt-inner tt-inner--photo">
+              <div class="tt-img-wrap">
+                <img src="assets/images/photo-11.jpg" alt="" class="tt-img" />
+              </div>
+              <p class="tt-text">Прости, я не мог упустить этой возможности 😂</p>
+            </div>
+          </div>
+
+          <!-- 11 — text only -->
+          <div class="tt-card">
+            <div class="tt-inner">
+              <p class="tt-text">Я же не один это заметил? 😏</p>
+              <p class="tt-text tt-text--secondary">Анют, когда ты улыбаешься, все на этом свете становится ярче, твоя улыбка&nbsp;— моя лучшая награда.</p>
+            </div>
+          </div>
+
+          <!-- 12 — dark wish card -->
+          <div class="tt-card">
+            <div class="tt-inner tt-inner--dark">
+              <p class="tt-text"><b>Моё солнышко, будь такой же яркой и жизнерадостной. Я отдал бы всё на свете, чтобы лишь любоваться твоим смехом и улыбкой. Чтобы знать и быть уверенным, что у тебя всё хорошо. Помни, я всегда рядом. И чтобы ни случилось, я найду способ поднять тебе настроение и всегда готов поддержать тебя.</b></p>
+              <button class="slide__btn tt-next" id="ttNextBtn">Дальше</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Slide 9 — final letter -->
+      <section class="slide" data-slide="9">
+        <canvas class="confetti-canvas" id="confettiCanvas"></canvas>
+        <div class="final-slide__scroll">
+          <div class="final-slide__card">
+            <p>Мне очень повезло встретить тебя. Ты человек, рядом с которым я чувствую себя живым и настоящим. Мне нравится твой характер&nbsp;— даже твоя упрямость. Нравится, как ты думаешь, как сомневаешься, как смеёшься.</p>
+            <p>Я хочу, чтобы в этом году ты чаще выбирала себя, не боялась своих амбиций и не уменьшала себя ради чужих ожиданий. У тебя гораздо больше возможностей, чем ты иногда позволяешь себе видеть.</p>
+            <p>Я рядом. И мне важно быть частью твоей жизни.</p>
+            <p class="final-slide__sign">С днём рождения, солнышко! 🌟</p>
           </div>
         </div>
       </section>
@@ -163,9 +352,10 @@
       />
     </div>
 
-    <div class="progress" id="progress">
-      <div class="progress__bar" id="progressBar"></div>
+    <div class="antony-peeker" id="antonyPeeker" aria-hidden="true">
+      <img src="assets/images/antony-hearts.png" alt="" class="antony-peeker__img" />
     </div>
+
 
     <script src="js/typewriter.js"></script>
     <script src="js/presentation.js"></script>

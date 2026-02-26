@@ -150,34 +150,39 @@ button {
   line-height: 1.7;
 }
 
-/* ===== Split Layout (text + image) ===== */
-.slide__split {
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  gap: 1.5rem;
-  max-width: 64rem;
-  width: 100%;
-  padding: 1.5rem;
-}
-
-.slide__split-text {
+/* ===== Slide 1 — instruction slide with corner character ===== */
+.instr-slide__content {
   text-align: center;
-  flex: 1;
-  min-width: 0;
+  max-width: 34rem;
+  width: 100%;
+  /* push content upward so it clears the image in the corner */
+  padding-bottom: clamp(8rem, 28dvh, 15rem);
 }
 
-.slide__split-image {
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-}
-
-.slide__character {
-  width: clamp(8rem, 30vw, 16rem);
+.instr-slide__img {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: clamp(12rem, 50vw, 24rem);
   height: auto;
   object-fit: contain;
-  filter: drop-shadow(0 8px 24px rgba(74, 32, 64, 0.15));
+  filter: drop-shadow(-6px -4px 28px rgba(74, 32, 64, 0.18));
+  transform: translate(80%, 100%);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.slide--active .instr-slide__img {
+  animation: instrImgIn 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+
+@keyframes instrImgIn {
+  from {
+    transform: translate(80%, 100%);
+  }
+  to {
+    transform: translate(8%, 28%);
+  }
 }
 
 /* ===== Reveal / Typewriter ===== */
@@ -209,18 +214,12 @@ button {
 }
 
 @media (min-width: 768px) {
-  .slide__split {
-    flex-direction: row;
-    gap: 3rem;
-    padding: 2rem;
+  .instr-slide__content {
+    padding-bottom: clamp(6rem, 20dvh, 12rem);
   }
 
-  .slide__split-text {
-    text-align: left;
-  }
-
-  .slide__character {
-    width: clamp(12rem, 20vw, 20rem);
+  .instr-slide__img {
+    width: clamp(16rem, 30vw, 26rem);
   }
 }
 
@@ -298,6 +297,34 @@ button {
   opacity: 1;
 }
 
+/* Antony hearts — slides up from bottom on card 9 */
+.antony-peeker {
+  position: fixed;
+  bottom: 0;
+  right: clamp(0.5rem, 4vw, 2rem);
+  z-index: 60;
+  width: clamp(14rem, 38vw, 22rem);
+  height: auto;
+  transform: translateY(105%);
+  transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Only 40% of the image peeks above the bottom edge */
+.antony-peeker--visible {
+  transform: translateY(60%);
+}
+
+.antony-peeker__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  mix-blend-mode: screen;
+  filter: drop-shadow(-4px -8px 24px rgba(74, 32, 64, 0.25));
+}
+
 /* ===== Progress Bar ===== */
 .progress {
   position: fixed;
@@ -364,18 +391,19 @@ button {
 
 .c-slide__track {
   position: relative;
-  flex: 0 0 clamp(11rem, 44vh, 20rem);
+  flex: 0 0 47dvh;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
 }
 
 .c-slide__item {
   position: absolute;
   /* explicit anchor: horizontally centred, slightly above mid-track */
   left: 50%;
-  top: 40%;
+  top: 46%;
   width: min(80vw, 30rem);
   padding: 1.75rem 2rem;
   background: rgba(255, 255, 255, 0.88);
@@ -409,12 +437,27 @@ button {
   padding: 0;
 }
 
+.c-slide__item--dark {
+  background: rgba(74, 32, 64, 0.88);
+  box-shadow:
+    0 6px 32px rgba(74, 32, 64, 0.35),
+    0 1px 4px rgba(74, 32, 64, 0.2);
+}
+
+.c-slide__item--dark .c-slide__text {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.c-slide__item--dark .c-slide__text b {
+  color: var(--color-primary);
+}
+
 .c-slide__dots {
+  flex: 0 0 6dvh;
   display: flex;
   gap: 0.5rem;
   justify-content: center;
-  padding: 0.625rem 0;
-  flex-shrink: 0;
+  align-items: center;
 }
 
 .c-slide__dot {
@@ -434,13 +477,13 @@ button {
 }
 
 .c-slide__image-wrap {
-  flex: 1 1 0;
+  flex: 0 0 47dvh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  min-height: 0;
+  align-items: center;
   width: 100%;
   pointer-events: none;
+  overflow: hidden;
 }
 
 .c-slide__image {
@@ -470,12 +513,8 @@ button {
   }
 
   /* Carousel — tablet */
-  .c-slide__track {
-    flex-basis: clamp(12rem, 46vh, 22rem);
-  }
-
   .c-slide__item {
-    top: 38%;
+    top: 44%;
     width: min(72vw, 34rem);
   }
 }
@@ -487,22 +526,318 @@ button {
   }
 
   /* Carousel — desktop */
-  .c-slide__track {
-    flex-basis: clamp(13rem, 48vh, 24rem);
-  }
-
   .c-slide__item {
-    top: 36%;
+    top: 42%;
     width: min(60vw, 38rem);
   }
 }
 
 /* Compact screens (short viewport) */
 @media (max-height: 680px) {
-  .c-slide__track {
-    flex-basis: clamp(9rem, 40vh, 16rem);
-  }
   .c-slide__item {
-    top: 38%;
+    top: 46%;
   }
+}
+
+/* ── TikTok scroll slide ─────────────────────────────────────── */
+.tt-slide {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tt-slide::-webkit-scrollbar {
+  display: none;
+}
+
+.tt-card {
+  height: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 0.9rem;
+  flex-shrink: 0;
+}
+
+.tt-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 2rem;
+  background: var(--color-white);
+  box-shadow:
+    0 6px 36px rgba(74, 32, 64, 0.13),
+    0 1px 4px rgba(74, 32, 64, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+  gap: 1.25rem;
+  overflow: hidden;
+}
+
+/* Photo cards — image takes majority of height, text below */
+.tt-inner--photo {
+  justify-content: flex-start;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.tt-img-wrap {
+  width: 100%;
+  flex: 1 1 0;
+  min-height: 0;
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+.tt-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  border-radius: 1.5rem;
+}
+
+.tt-text {
+  font-size: clamp(1rem, 0.85rem + 0.7vw, 1.2rem);
+  color: var(--color-text);
+  line-height: 1.7;
+  text-align: center;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.tt-text--secondary {
+  color: var(--color-text-light);
+  font-size: clamp(0.9rem, 0.8rem + 0.5vw, 1.05rem);
+}
+
+/* Placeholder card (card 8) */
+.tt-inner--placeholder {
+  background: var(--color-bg-alt);
+}
+
+.tt-placeholder {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tt-placeholder__icon {
+  font-size: 2.5rem;
+  opacity: 0.45;
+  filter: grayscale(1);
+}
+
+.tt-text--placeholder {
+  font-style: italic;
+  color: var(--color-text-light);
+}
+
+/* Dark card (card 12) */
+.tt-inner--dark {
+  background: rgb(74, 32, 64);
+  gap: 1.75rem;
+}
+
+.tt-inner--dark .tt-text {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.tt-inner--dark b {
+  color: var(--color-primary);
+}
+
+/* "Дальше" button inside last card */
+.tt-next {
+  flex-shrink: 0;
+}
+
+/* ── Stack slide ─────────────────────────────────────────────── */
+.stack-slide {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.stack-slide__deck {
+  display: grid;
+  width: min(84vw, 32rem);
+}
+
+.stack-slide__card {
+  grid-area: 1 / 1;
+  align-self: center;
+  padding: 2rem 2.25rem;
+  background: var(--color-white);
+  border-radius: 1.5rem;
+  box-shadow:
+    0 6px 32px rgba(74, 32, 64, 0.12),
+    0 1px 4px rgba(74, 32, 64, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  will-change: transform, opacity;
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1),
+    opacity 0.45s ease;
+}
+
+.stack-slide__text {
+  font-size: clamp(1rem, 0.85rem + 0.7vw, 1.25rem);
+  color: var(--color-text);
+  line-height: 1.75;
+  margin: 0;
+  text-align: center;
+}
+
+/* "Дальше" внутри последней карточки */
+.stack-slide__next {
+  margin-top: 1.75rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease 0.2s;
+}
+
+.stack-slide__next--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Тёмный вариант карточки */
+.stack-slide__card--dark {
+  background: rgb(74, 32, 64);
+  box-shadow:
+    0 6px 32px rgba(74, 32, 64, 0.35),
+    0 1px 4px rgba(74, 32, 64, 0.2);
+}
+
+.stack-slide__card--dark .stack-slide__text {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.stack-slide__card--dark .stack-slide__text b {
+  color: var(--color-primary);
+}
+
+/* Пульсация тени — подсказка на первой карточке */
+@keyframes stackPulse {
+  0%,
+  100% {
+    box-shadow:
+      0 6px 32px rgba(74, 32, 64, 0.12),
+      0 0 0 0 rgba(232, 160, 191, 0);
+  }
+  50% {
+    box-shadow:
+      0 6px 32px rgba(74, 32, 64, 0.12),
+      0 0 0 14px rgba(232, 160, 191, 0.3);
+  }
+}
+
+.stack-slide__card--pulse {
+  animation: stackPulse 2s ease-in-out infinite;
+}
+
+/* Подсказка снизу */
+.stack-slide__hint {
+  margin-top: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  color: var(--color-text-light);
+  opacity: 0.65;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.stack-slide__hint--gone {
+  opacity: 0;
+}
+
+.stack-slide__hint-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  animation: stackPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* ===== Final Slide ===== */
+.confetti-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.final-slide__scroll {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 36rem;
+  max-height: 88dvh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  padding: 1.25rem;
+}
+
+.final-slide__scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.final-slide__card {
+  background: #fff;
+  border-radius: 1.75rem;
+  padding: clamp(1.5rem, 5vw, 2.25rem);
+  box-shadow:
+    0 4px 24px rgba(74, 32, 64, 0.1),
+    0 1px 4px rgba(74, 32, 64, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  text-align: left;
+}
+
+.final-slide__card p {
+  font-size: clamp(0.875rem, 0.78rem + 0.55vw, 1.05rem);
+  color: var(--color-text);
+  line-height: 1.78;
+}
+
+.final-slide__sign {
+  font-family: var(--font-display) !important;
+  font-size: clamp(1.3rem, 0.9rem + 2vw, 1.9rem) !important;
+  font-weight: 600 !important;
+  color: var(--color-primary-dark) !important;
+  text-align: center !important;
+  padding-top: 0.5rem;
+  line-height: 1.3 !important;
 }

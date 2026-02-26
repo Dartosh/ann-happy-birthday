@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", () => {
   window.presentation = new Presentation("#presentation");
   runPeekerAnimation();
   initCarousel();
+  initStackSlide();
+  initTiktokSlide();
+  initFinalSlide();
 });
 
 function runPeekerAnimation() {
@@ -211,4 +214,302 @@ function initCarousel() {
   }).observe(slideEl, { attributes: true, attributeFilter: ['class'] });
 
   snapTo(0, false);
+}
+
+function initStackSlide() {
+  const slideEl = document.querySelector('[data-slide="7"]');
+  if (!slideEl) return;
+
+  const cards   = Array.from(slideEl.querySelectorAll('.stack-slide__card'));
+  const hint    = document.getElementById('stackHint');
+  const nextBtn = document.getElementById('stackNextBtn');
+  const TOTAL   = cards.length;
+  let current   = 0;
+
+  // Pre-generate a unique resting rotation for each card (applied when it goes behind).
+  // Range: ±7°, alternating sign so adjacent cards lean opposite ways.
+  const rots = cards.map((_, i) => {
+    const base = 2.5 + Math.random() * 4.5; // 2.5–7°
+    return i % 2 === 0 ? base : -base;
+  });
+  rots[0] = 0; // first card starts straight (it's the initial hint card)
+
+  // ── Layout all cards based on current top index ───────────────
+  function layout(animated) {
+    cards.forEach((card, i) => {
+      card.style.transition = animated
+        ? 'transform 0.5s cubic-bezier(0.34,1.2,0.64,1), opacity 0.45s ease'
+        : 'none';
+
+      if (i > current) {
+        // Not revealed yet — hidden below, enter straight
+        card.style.transform     = 'translateY(60px) scale(0.88) rotate(0deg)';
+        card.style.opacity       = '0';
+        card.style.zIndex        = i;
+        card.style.pointerEvents = 'none';
+      } else if (i === current) {
+        // Top card — always straight so it's readable
+        card.style.transform     = 'translateY(0) scale(1) rotate(0deg)';
+        card.style.opacity       = '1';
+        card.style.zIndex        = TOTAL + 10;
+        card.style.pointerEvents = 'none';
+        card.classList.toggle('stack-slide__card--pulse', current === 0);
+      } else {
+        // Settled in the stack — apply its resting tilt
+        const depth = current - i;
+        const r     = rots[i];
+        card.style.transform     = `translateY(${-depth * 6}px) scale(${1 - depth * 0.03}) rotate(${r}deg)`;
+        card.style.opacity       = '1';
+        card.style.zIndex        = TOTAL + 10 - depth;
+        card.style.pointerEvents = 'none';
+      }
+    });
+
+    // Hide hint after first tap
+    if (current > 0 && hint) hint.classList.add('stack-slide__hint--gone');
+
+    // Reveal button when last card is on top
+    if (current === TOTAL - 1 && nextBtn) {
+      nextBtn.classList.add('stack-slide__next--visible');
+    }
+  }
+
+  // ── Advance on tap ────────────────────────────────────────────
+  function advance(e) {
+    if (e.target.closest('#stackNextBtn')) return;
+    if (current < TOTAL - 1) {
+      current++;
+      layout(true);
+    }
+  }
+
+  // Prevent double-fire on mobile (touch → click)
+  let lastTouch = 0;
+  slideEl.addEventListener('touchend', (e) => {
+    if (e.target.closest('#stackNextBtn')) return;
+    lastTouch = Date.now();
+    e.stopPropagation();
+    if (current < TOTAL - 1) { current++; layout(true); }
+  }, { passive: true });
+
+  slideEl.addEventListener('click', (e) => {
+    if (Date.now() - lastTouch < 350) return;
+    advance(e);
+  });
+
+  // ── Keyboard: Space / ArrowRight advance stack ────────────────
+  document.addEventListener('keydown', (e) => {
+    if (!slideEl.classList.contains('slide--active')) return;
+    if (current >= TOTAL - 1) return; // let presentation handle it
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      current++;
+      layout(true);
+    }
+  }, { capture: true });
+
+  // ── "Дальше" button ───────────────────────────────────────────
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.presentation.next();
+    });
+  }
+
+  // ── Reset when slide becomes active ──────────────────────────
+  new MutationObserver(() => {
+    if (slideEl.classList.contains('slide--active')) {
+      current = 0;
+      layout(false);
+    }
+  }).observe(slideEl, { attributes: true, attributeFilter: ['class'] });
+
+  layout(false);
+}
+
+function initTiktokSlide() {
+  const slideEl = document.querySelector('[data-slide="8"]');
+  if (!slideEl) return;
+
+  const track   = document.getElementById('ttSlide');
+  const cards   = Array.from(slideEl.querySelectorAll('.tt-card'));
+  const nextBtn = document.getElementById('ttNextBtn');
+  const TOTAL   = cards.length;
+
+  function currentCardIndex() {
+    const h = track.clientHeight || 1;
+    return Math.round(track.scrollTop / h);
+  }
+
+  function scrollToCard(idx, smooth = true) {
+    const clamped = Math.max(0, Math.min(TOTAL - 1, idx));
+    track.scrollTo({ top: clamped * track.clientHeight, behavior: smooth ? 'smooth' : 'instant' });
+  }
+
+  // ── Keyboard intercept ────────────────────────────────────────
+  document.addEventListener('keydown', (e) => {
+    if (!slideEl.classList.contains('slide--active')) return;
+
+    const idx = currentCardIndex();
+
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (idx < TOTAL - 1) {
+        scrollToCard(idx + 1);
+      } else {
+        window.presentation.next();
+      }
+    }
+
+    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (idx > 0) {
+        scrollToCard(idx - 1);
+      } else {
+        window.presentation.prev();
+      }
+    }
+  }, { capture: true });
+
+  // ── "Дальше" button ───────────────────────────────────────────
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.presentation.next();
+    });
+  }
+
+  // ── Reset scroll to top when slide becomes active ─────────────
+  new MutationObserver(() => {
+    if (slideEl.classList.contains('slide--active')) {
+      scrollToCard(0, false);
+    }
+  }).observe(slideEl, { attributes: true, attributeFilter: ['class'] });
+
+  // ── Antony hearts: slides up from bottom on card 9 (photo-9.jpg) ─
+  const card9       = cards[8]; // 0-indexed
+  const antonyEl    = document.getElementById('antonyPeeker');
+  let   antonyTimer = null;
+
+  if (card9 && antonyEl) {
+    const antonyObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        if (!slideEl.classList.contains('slide--active')) return;
+        if (antonyTimer !== null) return; // already animating
+
+        const steps = [
+          [0,    () => antonyEl.classList.add('antony-peeker--visible')],
+          [2000, () => antonyEl.classList.remove('antony-peeker--visible')],
+          [800,  () => { antonyTimer = null; }],
+        ];
+
+        let delay = 0;
+        steps.forEach(([ms, fn]) => {
+          delay += ms;
+          antonyTimer = setTimeout(() => fn(), delay);
+        });
+      });
+    }, { root: track, threshold: 0.85 });
+
+    antonyObserver.observe(card9);
+  }
+}
+
+function launchConfetti(canvas) {
+  const W = window.innerWidth;
+  const H = window.innerHeight;
+  canvas.width = W;
+  canvas.height = H;
+
+  const ctx = canvas.getContext("2d");
+  const COLORS = [
+    "#e8a0bf", "#f472b6", "#d4789a",
+    "#fbbf24", "#c084fc", "#ffffff", "#fce7f3",
+  ];
+
+  const particles = Array.from({ length: 160 }, () => ({
+    x: W * (0.05 + Math.random() * 0.9),
+    y: -12 - Math.random() * H * 0.25,
+    w: 6 + Math.random() * 10,
+    h: 4 + Math.random() * 6,
+    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    rot: Math.random() * 360,
+    rotV: (Math.random() - 0.5) * 11,
+    vx: (Math.random() - 0.5) * 3.5,
+    vy: 1.5 + Math.random() * 3.5,
+    alpha: 1,
+    circle: Math.random() > 0.55,
+  }));
+
+  const t0 = performance.now();
+  const FADE_START = 3200;
+  const FADE_DUR = 1400;
+  let raf;
+
+  function tick(now) {
+    ctx.clearRect(0, 0, W, H);
+    const elapsed = now - t0;
+    let alive = 0;
+
+    for (const p of particles) {
+      if (p.alpha <= 0) continue;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.055;
+      p.rot += p.rotV;
+      if (elapsed > FADE_START) {
+        p.alpha = Math.max(0, 1 - (elapsed - FADE_START) / FADE_DUR);
+      }
+      if (p.y < H + 20) alive++;
+
+      ctx.save();
+      ctx.globalAlpha = p.alpha;
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rot * Math.PI) / 180);
+      ctx.fillStyle = p.color;
+      if (p.circle) {
+        ctx.beginPath();
+        ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      }
+      ctx.restore();
+    }
+
+    if (alive > 0 && elapsed < FADE_START + FADE_DUR) {
+      raf = requestAnimationFrame(tick);
+    } else {
+      ctx.clearRect(0, 0, W, H);
+    }
+  }
+
+  raf = requestAnimationFrame(tick);
+  return () => {
+    cancelAnimationFrame(raf);
+    ctx.clearRect(0, 0, W, H);
+  };
+}
+
+function initFinalSlide() {
+  const slideEl = document.querySelector('[data-slide="9"]');
+  const canvas = document.getElementById("confettiCanvas");
+  if (!slideEl || !canvas) return;
+
+  let cancelConfetti = null;
+
+  const observer = new MutationObserver(() => {
+    if (slideEl.classList.contains("slide--active")) {
+      setTimeout(() => {
+        if (cancelConfetti) cancelConfetti();
+        cancelConfetti = launchConfetti(canvas);
+      }, 500);
+    }
+  });
+
+  observer.observe(slideEl, { attributes: true, attributeFilter: ["class"] });
 }
